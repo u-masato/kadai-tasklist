@@ -49,8 +49,6 @@ class TasksController < ApplicationController
     private
     
     def safe_task
-        p "========== safe task =============="
-        p params.require(:task)
         params.require(:task).permit(:content)
     end
 
