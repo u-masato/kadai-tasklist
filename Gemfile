@@ -55,6 +55,5 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 group :production do
-  gem 'pd', '>= 0.18', '< 2.0'
+  gem 'pg', '>= 0.18', '< 2.0'
 end
-
