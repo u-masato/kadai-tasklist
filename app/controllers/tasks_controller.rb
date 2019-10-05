@@ -53,10 +53,7 @@ class TasksController < ApplicationController
     private
     
     def safe_task
-        p "#"*20
-        p params.require(:task).permit(:content, :status)
-        p "#"*20
-        binding.pry
+        # binding.pry
         params.require(:task).permit(:content, :status)
     end
     
