@@ -1,8 +1,13 @@
 class TasksController < ApplicationController
     before_action :set_task, only: [:show, :edit, :update, :destroy]
+    before_action :check_user, only: [:show, :edit, :update, :destroy]
     
     def index
-        @tasks = Task.all
+      if logged_in?
+        @tasks = current_user.tasks
+      else
+        redirect_to login_path
+      end
     end
     
     def show
@@ -13,7 +18,9 @@ class TasksController < ApplicationController
     end
 
     def create
-        @task = Task.new(safe_task)
+        # @task = Task.new(safe_task)
+        # @task.user = current_user
+        @task = current_user.tasks.build(safe_task)
         if @task.save
             flash[:success] = 'タスク登録に成功しました'
             redirect_to @task
@@ -46,11 +53,19 @@ class TasksController < ApplicationController
     private
     
     def safe_task
+        p "#"*20
+        p params.require(:task).permit(:content, :status)
+        p "#"*20
+        binding.pry
         params.require(:task).permit(:content, :status)
     end
     
+    def check_user
+      redirect_to root_url if @task.blank? || current_user.blank? || @task.user != current_user
+    end
+    
     def set_task
-        @task = Task.find(params[:id])
+        @task = Task.find_by(id: params[:id])
     end
 
 end
